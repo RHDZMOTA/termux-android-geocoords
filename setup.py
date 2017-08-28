@@ -14,5 +14,5 @@ def install_termux_dependencies():
 
 
 if __name__ == '__main__':
-    install_termux_dependencies()
     create_dir_if_exists(DataFilesConf.Paths.data)
+    install_termux_dependencies()
