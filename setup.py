@@ -1,4 +1,4 @@
-from settings import DataFilesConf
+from conf.settings import DataFilesConf
 import subprocess
 import os
 
