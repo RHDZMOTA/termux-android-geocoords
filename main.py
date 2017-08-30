@@ -50,7 +50,7 @@ def one_iteration():
     if len(speed) < 11:
         return False
     if np.nanmean(speed[-10:]) < 3.5:
-        if np.percentile(speed, 0.9) > 15:
+        if np.percentile(speed, 90) > 15:
             print('File saved!')
             create_file(recorded_datapoints, date=dates[0].strftime('%Y%m%d'))
             # send_file(recorded_datapoints, 'somewhere.com')
