@@ -8,8 +8,11 @@ def delete_file(file_path):
 
 
 def get_file_contents(file_path):
-    with open(file_path) as file:
-        file_contents = file.read()
+    try:
+        with open(file_path) as file:
+            file_contents = file.read()
+    except:
+        file_contents = ''
     return file_contents
 
 
