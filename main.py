@@ -5,7 +5,7 @@ import subprocess
 import numpy as np
 from util.math import harversine
 from conf.settings import DataFilesConf
-from util.file_operations import get_file_contents, delete_file
+from util.file_operations import get_file_contents, delete_file, create_file
 
 
 def start_process():
@@ -50,7 +50,8 @@ def one_iteration():
     if np.mean(speed[-10:]) < 3.5:
         if np.max(speed) > 15:
             print('File saved!')
-            #send_file(recorded_datapoints, 'somewhere.com')
+            create_file(recorded_datapoints, date=dates[0].strftime('%Y%m%d'))
+            # send_file(recorded_datapoints, 'somewhere.com')
         print("File deleted.")
         delete_file(DataFilesConf.FileNames.geo_data)
     return True
