@@ -47,7 +47,9 @@ def one_iteration():
     delta_time = list(map(lambda z: z.total_seconds() / 60 ** 2, paired_elems_apply(dates, lambda x, y: x - y)))
     delta_distance = paired_elems_apply(coord_pairs, harversine)
     speed = [d / t for d, t in zip(delta_distance, delta_time) if t > 0.1/60]
-    if np.mean(speed[-10:]) < 3.5:
+    if len(speed) < 11:
+        return False
+    if np.nanmean(speed[-10:]) < 3.5:
         if np.max(speed) > 15:
             print('File saved!')
             create_file(recorded_datapoints, date=dates[0].strftime('%Y%m%d'))
