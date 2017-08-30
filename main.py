@@ -17,7 +17,10 @@ def start_process():
 
 
 def end_process(process):
-    return os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+    try:
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+    except:
+        print("Couldn't end process.")
 
 
 def row_to_dict(row):
@@ -34,13 +37,13 @@ def paired_elems_apply(vector, diff_function):
     return [diff_function(i, j) for i, j in zip(vector[1:], vector[:-1])]
 
 
-def one_iteration():
+def one_iteration(process):
     recorded_datapoints = get_file_contents(DataFilesConf.FileNames.geo_data)
     if ',' not in recorded_datapoints:
-        return False
+        return process
     datapoints = list(filter(lambda x: '' not in x.split(','), recorded_datapoints.split('\n')))
-    if len(datapoints) < 30:
-        return False
+    if len(datapoints) < 25:
+        return process
     datapoints_dicts = list(map(lambda x: row_to_dict(x), datapoints))
     dates = list(map(lambda x: x['date'], datapoints_dicts))
     coord_pairs = list(map(lambda x: (x['lat'], x['lng']), datapoints_dicts))
@@ -48,7 +51,7 @@ def one_iteration():
     delta_distance = paired_elems_apply(coord_pairs, harversine)
     speed = [d / t for d, t in zip(delta_distance, delta_time) if t > 0.1/60]
     if len(speed) < 11:
-        return False
+        return process
     if np.nanmean(speed[-10:]) < 3.5:
         if np.percentile(speed, 90) > 15:
             print('File saved!')
@@ -56,23 +59,25 @@ def one_iteration():
             # send_file(recorded_datapoints, 'somewhere.com')
         print("File deleted.")
         delete_file(DataFilesConf.FileNames.geo_data)
-    return True
+        end_process(process)
+        process = start_process()
+    return process
 
 
-def procedure():
+def procedure(process):
     while True:
-        status = one_iteration()
+        try:
+            process = one_iteration(process)
+        except:
+            print("Something happened. Ending process...")
+            end_process(process)
+            print("Done.")
+            break
 
 
 def main():
     process = start_process()
-    try:
-        procedure()
-    except:
-        print("Something happened, ending process...")
-        end_process(process)
-        print("Done.")
-
+    procedure(process)
 
 if __name__ == '__main__':
     main()
