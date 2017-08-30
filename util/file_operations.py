@@ -29,13 +29,16 @@ def create_file(file_contents, date):
     file_path = generate_trip_filename(date)
     with open(file_path, 'w') as file:
         file.write(file_contents)
+    return file_path
 
 
-def send_file(file_contents, url, limit_try=10):
+def send_file(file_contents, file_name, url, limit_try=10):
     data = {
         'device': 'AndroidPhone',
-        'user': 'rhdzmota'}
-    files = (DataFilesConf.FileNames.geo_data, file_contents)
+        'user': 'rhdzmota',
+        'pwd': 'crabi-is-great',
+        'filename': file_name}
+    files = (file_name, file_contents)
     try:
         r = requests.post(url=url, data=data, files=files)
         print(r.text)
