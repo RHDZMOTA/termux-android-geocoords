@@ -21,3 +21,6 @@
 ```git clone https://github.com```
 
 6. Setup.
+
+
+pip install requests==2.3

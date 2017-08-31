@@ -1,6 +1,6 @@
 from conf.settings import DataFilesConf
 import requests
-import json
+import time
 import os
 
 
@@ -33,16 +33,20 @@ def create_file(file_contents, date):
     return file_path
 
 
-def send_file(file_contents, file_name, url, limit_try=10):
-    data = {
-        'device': 'AndroidPhone',
+def send_file(file_path, url, limit_try=5):
+    params = {
+        'content-type': 'multipart/form-data',
+        'device': 'Galaxy S4',
         'user': 'rhdzmota',
         'pwd': 'crabi-is-great',
-        'filename': file_name}
-    files = (file_name, file_contents)
+        'filename': os.path.basename(file_path)}
+    file_payload = {
+        'file': open(file_path, 'rb')
+    }
     try:
-        r = requests.post(url=url, data=data, files=[files])
+        r = requests.post(url=url, data=params, files=file_payload)
         print(r.text)
     except:
+        time.sleep(3)
         r = None
-    return send_file(file_contents, url, limit_try-1) if ((limit_try > 0) and (r is None)) else r
+    return send_file(file_path, url, limit_try-1) if ((limit_try > 0) and (r is None)) else r
