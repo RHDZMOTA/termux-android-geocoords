@@ -57,7 +57,7 @@ def one_iteration(process):
             print('File saved!')
             file_created = create_file(recorded_datapoints, date=dates[0].strftime('%Y%m%d'))
             r = send_file(recorded_datapoints, os.path.basename(file_created),
-                          'https://general-test-176923.appspot.com/trip')
+                          'https://general-test-176923.appspot.com/trip', 1)
         print("File deleted.")
         delete_file(DataFilesConf.FileNames.geo_data)
         end_process(process)

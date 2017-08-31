@@ -1,5 +1,6 @@
 from conf.settings import DataFilesConf
 import requests
+import json
 import os
 
 
@@ -40,7 +41,7 @@ def send_file(file_contents, file_name, url, limit_try=10):
         'filename': file_name}
     files = (file_name, file_contents)
     try:
-        r = requests.post(url=url, data=data, files=files)
+        r = requests.post(url=url, data=data, files=[files])
         print(r.text)
     except:
         r = None
