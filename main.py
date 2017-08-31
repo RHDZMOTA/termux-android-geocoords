@@ -56,8 +56,7 @@ def one_iteration(process):
         if np.percentile(speed, 90) > 15:
             print('File saved!')
             file_created = create_file(recorded_datapoints, date=dates[0].strftime('%Y%m%d'))
-            r = send_file(recorded_datapoints, os.path.basename(file_created),
-                          'https://general-test-176923.appspot.com/trip', 1)
+            r = send_file(file_path=file_created, url='https://general-test-176923.appspot.com/trip')
         print("File deleted.")
         delete_file(DataFilesConf.FileNames.geo_data)
         end_process(process)
