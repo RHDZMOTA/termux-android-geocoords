@@ -54,9 +54,10 @@ def one_iteration(process):
         return process
     if np.nanmean(speed[-10:]) < 3.5:
         if np.percentile(speed, 90) > 15:
-            print('File saved!')
+            print('File send!')
             file_created = create_file(recorded_datapoints, date=dates[0].strftime('%Y%m%d'))
-            r = send_file(file_path=file_created, url='https://general-test-176923.appspot.com/trip')
+            r = send_file(file_path=file_created)
+            print('Response: {}'.format(r.text))
         print("File deleted.")
         delete_file(DataFilesConf.FileNames.geo_data)
         end_process(process)

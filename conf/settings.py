@@ -10,6 +10,7 @@ GEO_DATA_FILENAME = environ.get('GEO_DATA_FILENAME')
 DETECTED_TRIP_FILENAME = environ.get('DETECTED_TRIP_FILENAME')
 USER_NAME = environ.get('USER_NAME')
 USER_EMAIL = environ.get('USER_EMAIL')
+TERMUX_GEOCOORD_API = environ.get('TERMUX_GEOCOORD_API')
 
 PROJECT_DIR = abspath(join(dirname(__file__), pardir))
 DATA_PATH = join(PROJECT_DIR, DATA_DIR_NAME)

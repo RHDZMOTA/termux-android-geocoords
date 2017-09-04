@@ -6,9 +6,12 @@
 1. Open the termux app.
 2. Go to the base directory for this project.
 3. Edit you user information:
-* ```cp conf/.env.example conf/.env```
-* ```nano conf/.env```
-* 
+* Create a .env file: ```cp conf/.env.example conf/.env```
+* Open and edit: ```nano conf/.env```
+* Edit the file by setting the variables USER_NAME and USER_EMAIL.
+* Move across the file with the 
+**volume-up button** + **w** / **a** / **s** / **d**.
+* To exit nano use **ctrl** + **X**.
 4. Run the following:
 * ```python main.py```
 

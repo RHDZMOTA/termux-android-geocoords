@@ -1,4 +1,4 @@
-from conf.settings import DataFilesConf
+from conf.settings import DataFilesConf, UserConf, TERMUX_GEOCOORD_API
 import requests
 import time
 import os
@@ -12,7 +12,8 @@ def get_file_contents(file_path):
     try:
         with open(file_path) as file:
             file_contents = file.read()
-    except:
+    except Exception as e:
+        print(str(e))
         file_contents = ''
     return file_contents
 
@@ -23,7 +24,7 @@ def generate_trip_filename(date):
         return DataFilesConf.FileNames.detected_trip.format(date=date, id=1)
     last_id = max(list(map(lambda x: int(x.replace(date, "").replace("trip.csv", "").replace("_", "")),
                            files)))
-    return DataFilesConf.FileNames.detected_trip.format(date=date, id=last_id+1)
+    return DataFilesConf.FileNames.detected_trip.format(date=date, id=last_id+1, user=UserConf.user_name)
 
 
 def create_file(file_contents, date):
@@ -33,20 +34,20 @@ def create_file(file_contents, date):
     return file_path
 
 
-def send_file(file_path, url, limit_try=5):
+def send_file(file_path, limit_try=10):
     params = {
         'content-type': 'multipart/form-data',
-        'device': 'Galaxy S4',
-        'user': 'rhdzmota',
+        'user': UserConf.user_name,
         'pwd': 'crabi-is-great',
         'filename': os.path.basename(file_path)}
     file_payload = {
         'file': open(file_path, 'rb')
     }
     try:
-        r = requests.post(url=url, data=params, files=file_payload)
+        r = requests.post(url=TERMUX_GEOCOORD_API, data=params, files=file_payload)
         print(r.text)
-    except:
+    except Exception as e:
+        print(str(e))
         time.sleep(3)
         r = None
-    return send_file(file_path, url, limit_try-1) if ((limit_try > 0) and (r is None)) else r
+    return send_file(file_path, limit_try-1) if ((limit_try > 0) and (r is None)) else r
