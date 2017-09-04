@@ -23,6 +23,30 @@ def end_process(process):
         print("Couldn't end process.")
 
 
+def reset_process(process):
+    end_process(process)
+    return start_process()
+
+
+def reset_needed():
+    def get_last_row(rows, i=1):
+        return rows[-i] if len(rows[-i]) else get_last_row(rows, i=i+1)
+    now = datetime.datetime.now()
+    with open(DataFilesConf.FileNames.geo_data, 'r') as file:
+        contents = file.read()
+    if not len(contents):
+        return False
+    content_rows = contents.split('\n')
+    try:
+        last_row = get_last_row(content_rows)
+        last_time = ' '.join(last_row.split(',')[:2])
+        then = datetime.datetime.strptime(last_time, '%d-%m-%Y %H:%M:%S')
+    except Exception as e:
+        print(str(e))
+        return False
+    return True if (now - then).total_seconds() > 60 else False
+
+
 def row_to_dict(row):
     elements = row.split(',')
     return {
@@ -42,6 +66,8 @@ def one_iteration(process):
     if ',' not in recorded_datapoints:
         return process
     datapoints = list(filter(lambda x: '' not in x.split(','), recorded_datapoints.split('\n')))
+    if reset_needed():
+        return reset_process(process)
     if len(datapoints) < 25:
         return process
     datapoints_dicts = list(map(lambda x: row_to_dict(x), datapoints))
