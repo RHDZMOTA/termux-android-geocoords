@@ -4,7 +4,7 @@ import datetime
 import subprocess
 import numpy as np
 from util.math import harversine
-from conf.settings import DataFilesConf
+from conf.settings import DataFilesConf, UserConf
 from util.file_operations import get_file_contents, delete_file, create_file, send_file
 
 
@@ -80,4 +80,6 @@ def main():
     procedure(process)
 
 if __name__ == '__main__':
+    if not UserConf.user_name:
+        raise Exception('User is not defined: see README.md for more details.')
     main()
