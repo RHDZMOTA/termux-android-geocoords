@@ -1,4 +1,5 @@
 import os
+import time
 import signal
 import datetime
 import subprocess
@@ -67,7 +68,9 @@ def one_iteration(process):
         return process
     datapoints = list(filter(lambda x: '' not in x.split(','), recorded_datapoints.split('\n')))
     if reset_needed():
-        return reset_process(process)
+        process = reset_process(process)
+        time.sleep(15)
+        return process
     if len(datapoints) < 25:
         return process
     datapoints_dicts = list(map(lambda x: row_to_dict(x), datapoints))
