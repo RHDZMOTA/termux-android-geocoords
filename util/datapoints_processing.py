@@ -36,10 +36,14 @@ def reset_needed():
     now = datetime.datetime.now()
     if not os.path.exists(DataFilesConf.FileNames.geo_data):
         return True
-    with open(DataFilesConf.FileNames.geo_data, 'r') as file:
-        contents = file.read()
+    try:
+        with open(DataFilesConf.FileNames.geo_data, 'r') as file:
+            contents = file.read()
+    except FileNotFoundError:
+        return True
+    
     if not len(contents):
-        return False
+        return True
     content_rows = contents.split('\n')
     try:
         last_row = get_last_row(content_rows)
@@ -47,5 +51,5 @@ def reset_needed():
         then = datetime.datetime.strptime(last_time, '%d-%m-%Y %H:%M:%S')
     except Exception as e:
         print(str(e))
-        return False
+        return True 
     return True if (now - then).total_seconds() > 60 else False
