@@ -1,10 +1,13 @@
 # Termux Android Geocoords
 
+Simple python script to run within termux-app. 
+
+**Lead developer**: @rhdzmota [rhdzmota@mxquants.com]
 
 ## Usage
 
 1. Open the termux app.
-2. Go to the base directory for this project.
+2. Go to the root directory for this project.
 3. Edit you user information:
 * Create a .env file: ```cp conf/.env.example conf/.env```
 * Open and edit: ```nano conf/.env```
@@ -27,33 +30,38 @@
 * ```pkg install git```
 * ```pkg install curl```
 
-4. Configure git.
+4. Install the following to ensure the bash script will run as intended:
+
+* ```pkg install bc```
+* ```pkg install jq```
+
+5. Configure git.
 
 * ```git config --global user.name "YourName"```
 * ```git config --global user.email your@email.com```
 
-5. Install python.
+6. Install python.
 
 * ```pkg install python```
 * ```apt install python-dev```
 * ```pip install --upgrade pip```
 
-6. Install advanced python libs.
+7. Install advanced python libs.
 
 * ```curl -L https://its-pointless.github.io/setup-pointless-repo.sh | sh```
 * ```pkg install scipy```
 
-7. Install other python dependencies.
+8. Install other python dependencies.
 
 * ```pip install -U python-dotenv```
 * ```pip install requests==2.3```
 
-8. Clone this repo.
+9. Clone this repo.
 
 * ```git clone https://github.com/rhdzmota/termux-android-geocoords.git```
 
 
-9. Optional (recommended).
+10. Optional (recommended).
 
 * ```pkg install vim```
 * ```apt install nano```
