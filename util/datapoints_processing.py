@@ -1,3 +1,4 @@
+import os
 import datetime
 
 from conf.settings import DataFilesConf
@@ -31,7 +32,10 @@ def extract_info(datapoints):
 def reset_needed():
     def get_last_row(rows, i=1):
         return rows[-i] if len(rows[-i]) else get_last_row(rows, i=i+1)
+
     now = datetime.datetime.now()
+    if not os.path.exists(DataFilesConf.FileNames.geo_data):
+        return True
     with open(DataFilesConf.FileNames.geo_data, 'r') as file:
         contents = file.read()
     if not len(contents):
