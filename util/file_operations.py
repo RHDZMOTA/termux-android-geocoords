@@ -18,12 +18,15 @@ def get_file_contents(file_path):
     return file_contents
 
 
+def replace_string(target, elements, value):
+    return target if not len(elements) else replace_string(target.replace(elements[0], value), elements[1:], value)
+
+
 def generate_trip_filename(date):
     files = list(filter(lambda x: date in x, os.listdir(DataFilesConf.Paths.data)))
     if not len(files):
         return DataFilesConf.FileNames.detected_trip.format(date=date, id=1)
-    last_id = max(list(map(lambda x: int(x.replace(date, "").replace("trip.csv", "").replace("_", "")),
-                           files)))
+    last_id = max(list(map(lambda x: int(replace_string(x, [date, "trip.csv", "_", UserConf.user_name], '')), files)))
     return DataFilesConf.FileNames.detected_trip.format(date=date, id=last_id+1, user=UserConf.user_name)
 
 
