@@ -25,7 +25,7 @@ def replace_string(target, elements, value):
 def generate_trip_filename(date):
     files = list(filter(lambda x: date in x, os.listdir(DataFilesConf.Paths.data)))
     if not len(files):
-        return DataFilesConf.FileNames.detected_trip.format(date=date, id=1)
+        return DataFilesConf.FileNames.detected_trip.format(date=date, id=1, user=UserConf.user_name)
     last_id = max(list(map(lambda x: int(replace_string(x, [date, "trip.csv", "_", UserConf.user_name], '')), files)))
     return DataFilesConf.FileNames.detected_trip.format(date=date, id=last_id+1, user=UserConf.user_name)
 
